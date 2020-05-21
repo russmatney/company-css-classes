@@ -1,4 +1,4 @@
-;;; company-css.el --- Company backend for css files -*- lexical-binding: t; -*-
+;;; company-css-classes.el --- Company backend for css files -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2020 russ
 ;;
@@ -8,7 +8,7 @@
 ;; Modified: May 21, 2020
 ;; Version: 0.0.1
 ;; Keywords:
-;; Homepage: https://github.com/russ/company-css
+;; Homepage: https://github.com/russ/company-css-classes
 ;; Package-Requires: ((emacs 26.3) (cl-lib "0.5"))
 ;;
 ;; This file is not part of GNU Emacs.
@@ -31,7 +31,7 @@
 ;;; Configuration
 ;;;
 
-(defvar company-css-filepath nil
+(defvar company-css-classes-filepath nil
   "The css file to parse for classes.")
 
 ;;;
@@ -48,7 +48,7 @@
 ;;; https://github.com/glittershark/org-clubhouse/blob/f00c22a49af3798c8a4be6d1831b5142ff56a19e/org-clubhouse.el#L408
 ;;;
 
-(defvar company-css-cache-clear-functions ())
+(defvar company-css-classes-cache-clear-functions ())
 
 (defmacro defcache (name &optional docstring &rest body)
   "A mechanism for creating cached functions.
@@ -80,18 +80,18 @@ will be used."
          (setq ,cache-var-name :no-cache))
 
        (push (quote ,clear-cache-function-name)
-             company-css-cache-clear-functions))))
+             company-css-classes-cache-clear-functions))))
 
-(defun company-css-clear-cache ()
+(defun company-css-classes-clear-cache ()
   "Clears all caches created with `defcache'."
   (interactive)
-  (setq company-css-cache-clear-functions '())
-  ;; (-map #'funcall company-css-cache-clear-functions)
+  (setq company-css-classes-cache-clear-functions '())
+  ;; (-map #'funcall company-css-classes-cache-clear-functions)
   )
 
 (comment
  ;; defcache usage
- (company-css-clear-cache)
+ (company-css-classes-clear-cache)
  (defcache example-fn
    "Required doc string."
    (message "howdy")
@@ -112,7 +112,7 @@ will be used."
   TODO use the defvar
   TODO read from .dir-locals.el
   TODO work from project-dir?
-  (file-truename company-css-filepath)"
+  (file-truename company-css-classes-filepath)"
   (file-truename "~/russmatney/yodo/public/css/main-built.css"))
 
 (defconst css-imenu-generic-expression
@@ -190,7 +190,7 @@ and trailing open-brackets."
 COMMAND, ARG, and IGNORED are dictated by company-mode's backend spec."
   (interactive (list 'interactive))
   (cl-case command
-    (interactive (company-begin-backend 'css-classes-backend))
+    (interactive (company-begin-backend 'company-css-classes-backend))
     (prefix (company-grab-symbol))
     (candidates (cl-remove-if-not
                  ;; (lambda (c) (sample-fuzzy-match arg c))
@@ -201,12 +201,12 @@ COMMAND, ARG, and IGNORED are dictated by company-mode's backend spec."
 ;;; Minor mode necessary?
 ;;;
 
-(define-minor-mode company-css-mode
+(define-minor-mode company-css-classes-mode
   "If enabled, updates to the todo keywords on org headlines will update the
 linked ticket in Clubhouse."
   :group 'company
-  :lighter "Company-CSS"
+  :lighter "Company-CSS-Classes"
   :keymap '())
 
-(provide 'company-css)
-;;; company-css.el ends here
+(provide 'company-css-classes)
+;;; company-css-classes.el ends here
