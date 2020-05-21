@@ -1,6 +1,5 @@
 #+TITLE: company-css-classes
 
-* Company-css-classes
 Autocompletion for classnames in a css file.
 
 Created to support tailwindCSS class autocompletion in clojurescript
@@ -16,16 +15,35 @@ Currently only supports completion in ~:class~ lists, as in:
 #+END_SRC
 
 Utilizes a local cache to prevent extraneous parsing of the css file. The cache
-can be cleared with `M-x company-css-classes-clear-cache`.
+can be cleared with ~M-x company-css-classes-clear-cache~.
 
 * Blocking issues
 ** [ ] Configurable css file
 Currently the css file is hard-coded to match my current project. This should be
 reconfigured to read from a dir-local var that builds up from the project's
 working directory. Probably involves a projectile helper?
-
 * Roadmap
-** [ ] Support completion following `:div.text-<TAB>` syntax
-This should be reasonable, and I believe company provides helpers to make this
-simple.
-** [ ] Support fetching the class definition for display in `company-box`
+** [ ] Support completion following ~:div.text-<TAB>~ syntax
+This should be reasonable, and I believe company provides helpers to support
+this.
+** [ ] Support fetching the class definition for display in ~company-box~
+* Installation
+** Doom Emacs
+#+BEGIN_SRC emacs-lisp
+;; packages.el
+(package! company-css-classes :recipe
+  (:host github :repo "russmatney/company-css-classes" :files ("*")))
+
+;; config.el
+(use-package! company-css-classes)
+
+(use-package! clojure-mode
+  :mode "\\.clj$"
+  :mode ("\\.cljs$" . clojurescript-mode)
+  :mode ("\\.cljc$" . clojurec-mode)
+
+  :config
+  (set-company-backend!
+    'clojurescript-mode
+    '(company-capf company-yasnippet company-flow company-css-classes-backend)))
+#+END_SRC
