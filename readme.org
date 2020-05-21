@@ -1,4 +1,31 @@
-#+TITLE: company-css
+#+TITLE: company-css-classes
 
+* Company-css-classes
+Autocompletion for classnames in a css file.
 
-A css backend for company mode. Made targeting clojurescript/hiccup style component editing.
+Created to support tailwindCSS class autocompletion in clojurescript
+hiccup-style components.
+
+Currently only supports completion in ~:class~ lists, as in:
+
+#+BEGIN_SRC clojurescript
+(defn my-component []
+  [:div
+   {:class ["text-<TAB>"]}
+   "some content"])
+#+END_SRC
+
+Utilizes a local cache to prevent extraneous parsing of the css file. The cache
+can be cleared with `M-x company-css-classes-clear-cache`.
+
+* Blocking issues
+** [ ] Configurable css file
+Currently the css file is hard-coded to match my current project. This should be
+reconfigured to read from a dir-local var that builds up from the project's
+working directory. Probably involves a projectile helper?
+
+* Roadmap
+** [ ] Support completion following `:div.text-<TAB>` syntax
+This should be reasonable, and I believe company provides helpers to make this
+simple.
+** [ ] Support fetching the class definition for display in `company-box`
