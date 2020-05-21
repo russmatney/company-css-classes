@@ -103,7 +103,7 @@ will be used."
  )
 
 ;;;
-;;; Parse the CSS file
+;;; Parse the CSS file and `get-classes'
 ;;;
 
 (defun css-file-path ()
@@ -151,28 +151,51 @@ and trailing open-brackets."
     (->> parsed
          (cl-remove-if-not (lambda (s) (s-prefix? "." s)))
          (cl-map 'list #'trim-class-name)
-         (cl-remove-if (lambda (s)
-                         (or
-                          ;; remove all but 500 level tailwind colors
-                          (s-suffix? "-100" s)
-                          (s-suffix? "-200" s)
-                          (s-suffix? "-300" s)
-                          (s-suffix? "-400" s)
-                          ;; (s-suffix? "-500" s)
-                          (s-suffix? "-600" s)
-                          (s-suffix? "-700" s)
-                          (s-suffix? "-800" s)
-                          (s-suffix? "-900" s)))))))
-
-(or
- (s-suffix? "-900" "hello-900")
- (s-suffix? "-900" "hello")
- )
+         (cl-remove-if
+          (lambda (s)
+            (or
+             ;; remove all but 500 level tailwind colors
+             (s-suffix? "-75" s)
+             (s-suffix? "-100" s)
+             (s-suffix? "-150" s)
+             (s-suffix? "-200" s)
+             (s-suffix? "-300" s)
+             (s-suffix? "-400" s)
+             ;; (s-suffix? "-500" s)
+             (s-suffix? "-600" s)
+             (s-suffix? "-700" s)
+             (s-suffix? "-800" s)
+             (s-suffix? "-900" s)
+             (s-suffix? "-1000" s)))))))
 
 (comment
  (get-classes)
+ (length (get-classes))
  get-classes-cache
- (clear-get-classes-cache))
+ (clear-get-classes-cache)
+
+(let ((s "hello-600"))
+  (or
+   (s-suffix? "-900" s)
+   (s-suffix? "-700" s)
+   )))
+
+;;;
+;;; Company backend
+;;;
+
+(defun company-css-classes-backend (command &optional arg &rest ignored)
+  "A backend for company mode that serves css classes from a specified file.
+
+COMMAND, ARG, and IGNORED are dictated by company-mode's backend spec."
+  (interactive (list 'interactive))
+  (cl-case command
+    (interactive (company-begin-backend 'css-classes-backend))
+    (prefix (company-grab-symbol))
+    (candidates (cl-remove-if-not
+                 ;; (lambda (c) (sample-fuzzy-match arg c))
+                 (lambda (c) (string-prefix-p arg c))
+                 (get-classes)))))
 
 ;;;
 ;;; Minor mode necessary?
