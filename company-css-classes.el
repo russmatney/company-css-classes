@@ -2,8 +2,8 @@
 ;;
 ;; Copyright (C) 2020 russ
 ;;
-;; Author: russ <http://github/russ>
-;; Maintainer: russ <russ@algo>
+;; Author: Russell Matney <http://github.com/russmatney>
+;; Maintainer: Russell Matney <russell.matney@gmail.com>
 ;; Created: May 21, 2020
 ;; Modified: May 21, 2020
 ;; Version: 0.0.1
@@ -19,7 +19,11 @@
 ;;
 ;;  Currently requires a path to a css file to be set.
 ;;
-;;  That file is parsed and the resulting classes are fed as a company backend.
+;;  The specified css file is parsed and the resulting classes are fed as a
+;;  company backend.
+;;
+;; Primary use-case is getting tailwindcss classnames auto-completing in
+;; clojurescript files.
 ;;
 ;;; Code:
 
