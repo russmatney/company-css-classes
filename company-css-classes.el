@@ -111,13 +111,18 @@ will be used."
 ;;;
 
 (defun css-file-path ()
-  "Return the css-file-path for to be parsed.
+  "Return the css-file-path for to be parsed."
+  (if (eq nil company-css-classes-filepath)
+      (progn (message "Expected `company-css-classes-filepath' to be set.")
+             nil)
+    (file-truename company-css-classes-filepath))
+  )
 
-  TODO use the defvar
-  TODO read from .dir-locals.el
-  TODO work from project-dir?
-  (file-truename company-css-classes-filepath)"
-  (file-truename "~/russmatney/yodo/public/css/main-built.css"))
+(comment
+ (setq company-css-classes-filepath
+       "~/russmatney/yodo-two/public/css/main-built.css")
+
+ (css-file-path))
 
 (defconst css-imenu-generic-expression
   "^[ \t]*\\([[:word:].:#, \t-]+\\)\\s-*{"

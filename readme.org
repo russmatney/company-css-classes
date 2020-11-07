@@ -17,11 +17,22 @@ Currently only supports completion in ~:class~ lists, as in:
 Utilizes a local cache to prevent extraneous parsing of the css file. The cache
 can be cleared with ~M-x company-css-classes-clear-cache~.
 
-* Blocking issues
-** [ ] Configurable css file
-Currently the css file is hard-coded to match my current project. This should be
-reconfigured to read from a dir-local var that builds up from the project's
-working directory. Probably involves a projectile helper?
+* Configuration
+This lib parses css class-names from a css file specified via
+`company-css-classes-filepath`. This can be set per project using
+~.dir-locals.el~.
+
+#+begin_src elisp
+;; <project-root>/.dir-locals.el
+((clojurec-mode
+  (company-css-classes-filepath . "./public/css/main-built.css"))
+ (clojurescript-mode
+  (company-css-classes-filepath . "./public/css/main-built.css")))
+#+end_src
+
+The value is passed to `file-truename`, so relative and expandable filepaths should
+work fine.
+
 * Roadmap
 ** [ ] Support completion following ~:div.text-<TAB>~ syntax
 This should be reasonable, and I believe company provides helpers to support
@@ -45,5 +56,8 @@ this.
   :config
   (set-company-backend!
     'clojurescript-mode
+    '(company-capf company-yasnippet company-flow company-css-classes-backend)))
+  (set-company-backend!
+    'clojurec-mode
     '(company-capf company-yasnippet company-flow company-css-classes-backend)))
 #+END_SRC
